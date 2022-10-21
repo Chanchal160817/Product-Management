@@ -118,7 +118,7 @@ const createProducts = async (req, res) => {
         .send({ status: false, message: "Size is a mandatory filed" });
     }
 
-    let arr = ["S", "XS", "M", "X", "L", "XXL", "XL"];
+    let arr = ["S", "XS", "M", "X", "L", "XXL", "XL"]; //"X,S,S,L" => [X,S,L]
     let sizeArr = availableSizes.replace(/\s+/g, "").split(",").map(String);
     let uniqueSize = sizeArr.filter(function (item, i, ar) {
       return ar.indexOf(item) === i;
@@ -164,9 +164,16 @@ const createProducts = async (req, res) => {
 const getProducts = async function (req, res) {
   try {
     let data = req.query;
-    let { size, name, priceLessThan } = data;
-
+    let { size, name, priceLessThan, priceGreaterThan, priceSort } = data;
     let ndata = {};
+
+    if (priceSort) {
+      if (priceSort != 1 && priceSort != -1)
+        return res.status(400).send({
+          status: false,
+          data: "For acending 1 or for decending put -1",
+        });
+    }
 
     if (size) {
       let sizeArr = size.replace(/\s+/g, "").split(",");
@@ -193,9 +200,13 @@ const getProducts = async function (req, res) {
       ndata.price = { $lt: Number(priceLessThan) };
     }
 
+    if (priceGreaterThan) {
+      ndata.price = { $gt: Number(priceGreaterThan) };
+    }
+
     let productDetail = await productModel
       .find({ isDeleted: false, ...ndata })
-      .sort({ price: 1 });
+      .sort({ price: parseInt(priceSort) });
     if (productDetail.length == 0)
       return res
         .status(404)
