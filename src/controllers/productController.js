@@ -171,7 +171,7 @@ const getProducts = async function (req, res) {
       if (priceSort != 1 && priceSort != -1)
         return res.status(400).send({
           status: false,
-          data: "For acending 1 or for decending put -1",
+          data: "For ascending 1 or for descending put -1",
         });
     }
 

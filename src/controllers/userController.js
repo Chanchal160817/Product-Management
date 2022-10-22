@@ -310,7 +310,7 @@ const updateUser = async function (req, res) {
         });
       }
       let url = await uploadFile(file[0]);
-      data["profileImage"] = url;
+      up["profileImage"] = url;
     }
 
     if (fname) {
@@ -365,7 +365,7 @@ const updateUser = async function (req, res) {
           .status(400)
           .send({ status: false, message: "password is invalid" });
 
-      let salt = await bcrypt.genSalt(10);
+      let salt = await bcrypt.genSalt(10); 
       updateQueries["password"] = await bcrypt.hash(data.password, salt);
     }
 

@@ -50,6 +50,7 @@ const isValidTitle = function(name) {
   if (/^[a-zA-Z 0-9\.]*$/.test(name)) return true
  return false
 }
+//afasdfjdkfjdkf.djf
 
 const isValidImg = (img) => {
   const reg = /.+\.(?:(jpg|gif|png|jpeg|jfif))/;
